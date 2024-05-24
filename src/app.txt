@@ -1,0 +1,76 @@
+const [list , setlist] = useState([]);
+  const [text , setText] = useState();
+  const [editMode , setEditMode] = useState(false);
+  const [currentIndex , setCurrentIndex] = useState();
+import { useState } from 'react';
+  
+
+
+  function addItem(){
+    const copyList = [...list];
+    copyList.push(text);
+    setlist(copyList)
+
+    setText('');
+  }
+
+  function updateText(e){
+    let value = e.target.value;
+    setText(value)
+  }
+
+  function deleteText(index){
+    const copylist = [...list];
+    copylist.splice(index , 1)
+    setlist(copylist);
+  }
+
+  function editItem(index){
+    // PURPOSE:
+    // 1. jis li/index p click hou oski value input pr chale jai
+    // 2.Add ka update me change hojai
+    // 3.Index state me save krwana h
+
+    const value = list[index]
+    setText(value)
+
+    console.log(index)
+
+    setEditMode(true)
+    setCurrentIndex(index)
+
+    setText('');
+
+  }
+
+  function updateItem(){
+    // PURPOSE:
+    // 1.update k button set add me change hojai
+    // 2.list me INDEX ki value update hojai iput value se
+
+    setEditMode(false)
+
+    const copyList = [...list]
+    copyList[currentIndex] = text
+    setlist(copyList)
+    
+  }
+
+  function deleteAll(){
+    setlist([])
+  }
+
+
+   <input onChange={updateText} type="text" placeholder='Enter any text'/>
+        {
+        editMode ?<button onClick={updateItem}>update</button>:<button onClick={addItem}>Add</button>
+        }
+        <button onClick={deleteAll}>Delete All</button>
+        <ul>
+          {list.map(function(item , index){
+            return <li>{item}
+            <button onClick={()=>deleteText(index)}>Delete</button>
+            <button onClick={() => editItem(index)}>Edit</button>
+            </li>
+          })}
+        </ul>
